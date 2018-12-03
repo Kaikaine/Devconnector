@@ -3,6 +3,10 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
 
+// Load valiation
+
+const validateProfileInput = require("../../validation/profile");
+
 // Load Profile Model
 const Profile = require("../../models/Profile");
 // Load User Profile
@@ -26,6 +30,7 @@ router.get(
     const errors = {};
 
     Profile.findOne({ user: req.user.id })
+    .populate('user', ['name', 'avatar'])
       .then(profile => {
         if (!profile) {
           errors.noprofile = "No profle found";
@@ -44,6 +49,14 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { errors, isValid } = validateProfileInput(req.body);
+
+    // Check validation
+    if (!isValid) {
+      // Return an errors with 400 status
+      return res.status(400).json(errors);
+    }
+
     // Get fields
     const profileFields = {};
     profileFields.user = req.user.id;
@@ -73,23 +86,20 @@ router.post(
           { user: req.user.id },
           { $set: profileFields },
           { new: true }
-        )
-        .then(profile =>res.json(profile))
+        ).then(profile => res.json(profile));
       } else {
         // Create
 
         // Check if handle exists
-        Profile.findOne({handle: profileFields.handle})
-        .then(profile => {
-          if(profile) {
-            errors.handle = 'That handle already exists'
-            res.status(400).json(errors)
+        Profile.findOne({ handle: profileFields.handle }).then(profile => {
+          if (profile) {
+            errors.handle = "That handle already exists";
+            res.status(400).json(errors);
           }
 
           // Save profile
-          new Profile(profileFields).save
-          .then(profile => res.json(profile))
-        })
+          new Profile(profileFields).save().then(profile => res.json(profile));
+        });
       }
     });
   }
