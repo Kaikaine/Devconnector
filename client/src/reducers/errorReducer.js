@@ -1,7 +1,5 @@
 import { GET_ERRORS } from './../actions/types';
-const initalState = {
-    
-  };
+const initalState = {};
   
   export default function(state = initalState, action) {
     switch (action.type) {
