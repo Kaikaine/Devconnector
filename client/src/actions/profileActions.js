@@ -6,19 +6,19 @@ import { GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE } from "./types";
 export const getCurrentProfile = () => dispatch => {
   dispatch(setProfileLoading());
   axios
-    .get("/api/profile")
-    .then(res => {
+    .get('/api/profile')
+    .then(res =>
       dispatch({
         type: GET_PROFILE,
         payload: res.data
-      });
-    })
-    .catch(err => {
+      })
+    )
+    .catch(err =>
       dispatch({
         type: GET_PROFILE,
         payload: {}
-      });
-    });
+      })
+    );
 };
 
 // Profile loading
