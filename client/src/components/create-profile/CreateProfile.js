@@ -5,6 +5,9 @@ import TextFieldGroup from "./../common/TextFieldGroup";
 import TextAreaFieldGroup from './../common/TextAreaFieldGroup';
 import SelectListGroup from './../common/SelectListGroup';
 import InputGroup from './../common/InputGroup';
+import { createProfile } from "../../actions/profileActions";
+import { withRouter } from 'react-router-dom';
+
 
 class CreateProfile extends Component {
   constructor(props) {
@@ -28,6 +31,12 @@ class CreateProfile extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+      if(nextProps.errors) {
+          this.setState({errors: nextProps.errors})
+      }
+  }
+
   onChange = e => {
       this.setState({[e.target.name]: e.target.value})
   }
@@ -35,7 +44,23 @@ class CreateProfile extends Component {
   onSubmit = e => {
       e.preventDefault()
 
-      console.log('submit')
+      const profileData = {
+        handle: this.state.handle,
+        company: this.state.company,
+        website: this.state.website,
+        location: this.state.location,
+        status: this.state.status,
+        skills: this.state.skills,
+        githubusername: this.state.githubusername,
+        bio: this.state.bio,
+        twitter: this.state.twitter,
+        facebook: this.state.facebook,
+        linkedin: this.state.linkedin,
+        youtube: this.state.youtube,
+        instagram: this.state.instagram,
+      }
+
+      this.props.createProfile(profileData, this.props.history)
   }
 
   render() {
@@ -144,7 +169,7 @@ class CreateProfile extends Component {
                 name='website'
                 value={this.state.website}
                 onChange={this.onChange}
-                error={errors.handle}
+                error={errors.website}
                 info='Could be your website or a company one'
                 />
                 <TextFieldGroup
@@ -160,7 +185,7 @@ class CreateProfile extends Component {
                 name='skills'
                 value={this.state.skills}
                 onChange={this.onChange}
-                error={errors.handle}
+                error={errors.skills}
                 info='* Please use comma separated values (eg. HTML,CSS,JavaScript,PHP)'
                 />
                 <TextFieldGroup
@@ -180,7 +205,7 @@ class CreateProfile extends Component {
                 info='Tell us a little about yourself'
                 />
                 <div className="mb-3">
-                <button onClick={() => {
+                <button type='button' onClick={() => {
                     this.setState(prevState => ({
                         displaySocialInputs: !prevState.displaySocialInputs
                     }))
@@ -208,4 +233,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps)(CreateProfile);
+export default connect(mapStateToProps, {createProfile})(withRouter(CreateProfile));

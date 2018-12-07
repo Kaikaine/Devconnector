@@ -18,6 +18,7 @@ class Navbar extends Component {
     const authLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
+        {/* eslint-disable-next-line */}
           <a
             href=""
             onClick={this.onLogoutClick.bind(this)}
