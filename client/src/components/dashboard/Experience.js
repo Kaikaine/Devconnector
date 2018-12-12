@@ -5,11 +5,9 @@ import Moment from 'react-moment';
 import { deleteExperience } from '../../actions/profileActions';
 
 class Experience extends Component {
-  onDeleteClick = (id) => {
-    this.props.deleteExperience(id);
-  }
 
   render() {
+
     const experience = this.props.experience.map(exp => (
       <tr key={exp._id}>
         <td>{exp.company}</td>
@@ -24,8 +22,10 @@ class Experience extends Component {
         </td>
         <td>
           <button
-            onClick={this.onDeleteClick(exp._id)}
             className="btn btn-danger"
+            onClick={() => {
+                this.props.deleteExperience(exp._id);
+            }}
           >
             Delete
           </button>
