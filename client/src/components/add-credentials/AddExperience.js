@@ -160,4 +160,3 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, { addExperience })(
   withRouter(AddExperience)
 );
-
