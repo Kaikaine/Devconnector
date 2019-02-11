@@ -48,7 +48,7 @@ if(process.env.NODE_ENV === 'production') {
     //     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
     // })
     app.get("/", autoRedirect, function(req, res){
-        res.sendFile(path.resolve(__dirname, "client", "index.html"));
+        res.sendFile(path.resolve(__dirname, "client", 'build', "index.html"));
      });
    //Public files <this needs to stay right below app.get("/")!!!!
      app.use(express.static(__dirname + "/client"))
